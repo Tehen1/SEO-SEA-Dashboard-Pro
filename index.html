@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO-SEA Dashboard Pro</title>
+    <meta name="description" content="Professional SEO & SEA analytics dashboard with AI integration">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SEO Dashboard">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" id="manifest-placeholder">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%236366f1'/><text x='32' y='40' text-anchor='middle' fill='white' font-size='24' font-weight='bold'>S</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='48' fill='%236366f1'/><text x='96' y='120' text-anchor='middle' fill='white' font-size='72' font-weight='bold'>S</text></svg>">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark">
+    <!-- PWA Install Banner -->
+    <div id="pwa-install-banner" class="glass-morphism pwa-banner hidden">
+        <div class="pwa-banner-content">
+            <div class="pwa-banner-icon">📱</div>
+            <div class="pwa-banner-text">
+                <strong>Installer l'application</strong>
+                <span>Accès rapide et mode hors ligne</span>
+            </div>
+            <button id="pwa-install-btn" class="btn-primary">Installer</button>
+            <button id="pwa-dismiss-btn" class="pwa-dismiss">×</button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen gradient-hero">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="loading-pulse"></div>
+                <span class="text-shimmer">SEO Dashboard Pro</span>
+            </div>
+            <div class="loading-bar glass-morphism">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-morphism" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="logo-icon">🚀</span>
+                    <span class="logo-text text-shimmer">SEO Dashboard</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="seo-dashboard">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-text">SEO Dashboard</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="keywords">
+                    <span class="nav-icon">🔑</span>
+                    <span class="nav-text">Keywords</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="audit">
+                    <span class="nav-icon">🏥</span>
+                    <span class="nav-text">Audit Technique</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="backlinks">
+                    <span class="nav-icon">🔗</span>
+                    <span class="nav-text">Backlinks</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="campaigns">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-text">Campagnes SEA</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="ads">
+                    <span class="nav-icon">📢</span>
+                    <span class="nav-text">Publicités</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="content-gen">
+                    <span class="nav-icon">✍️</span>
+                    <span class="nav-text">Génération IA</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="content-analysis">
+                    <span class="nav-icon">📝</span>
+                    <span class="nav-text">Analyse Contenu</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="reports">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Rapports</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Analytics</span>
+                </a>
+                <a href="#" class="sidebar-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Paramètres</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="theme-toggle glass-morphism" id="theme-toggle">
+                    <span class="theme-icon">☀️</span>
+                    <span class="theme-text">Mode Clair</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content cyber-grid" id="main-content">
+            <!-- Top Header -->
+            <header class="top-header glass-morphism">
+                <div class="header-left">
+                    <h1 id="page-title" class="text-shimmer">Dashboard</h1>
+                    <div class="breadcrumb">
+                        <span id="breadcrumb-path">Accueil / Dashboard</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="connection-status" id="connection-status">
+                        <span class="status-indicator online"></span>
+                        <span class="status-text">En ligne</span>
+                    </div>
+                    <div class="sync-status" id="sync-status">
+                        <span class="sync-icon">🔄</span>
+                        <span class="sync-text">Synchronisé</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="section-dashboard" class="content-section active">
+                <div class="dashboard-grid">
+                    <div class="metric-card glass-morphism" data-animate="fadeIn">
+                        <div class="metric-header">
+                            <span class="metric-icon">🌐</span>
+                            <span class="metric-label">Trafic Organique</span>
+                        </div>
+                        <div class="metric-value" data-animate="15420">0</div>
+                        <div class="metric-change positive">+12.5%</div>
+                    </div>
+                    <div class="metric-card glass-morphism" data-animate="fadeIn">
+                        <div class="metric-header">
+                            <span class="metric-icon">🔑</span>
+                            <span class="metric-label">Keywords</span>
+                        </div>
+                        <div class="metric-value" data-animate="287">0</div>
+                        <div class="metric-change positive">+8.3%</div>
+                    </div>
+                    <div class="metric-card glass-morphism" data-animate="fadeIn">
+                        <div class="metric-header">
+                            <span class="metric-icon">🔗</span>
+                            <span class="metric-label">Backlinks</span>
+                        </div>
+                        <div class="metric-value" data-animate="1245">0</div>
+                        <div class="metric-change positive">+5.2%</div>
+                    </div>
+                    <div class="metric-card glass-morphism" data-animate="fadeIn">
+                        <div class="metric-header">
+                            <span class="metric-icon">⚡</span>
+                            <span class="metric-label">Performance</span>
+                        </div>
+                        <div class="metric-value" data-animate="87">0</div>
+                        <div class="metric-change negative">-2.1%</div>
+                    </div>
+                </div>
+
+                <div class="charts-section">
+                    <div class="chart-container glass-morphism">
+                        <h3>Évolution du Trafic</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container glass-morphism">
+                        <h3>Sources de Trafic</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="sourcesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insights-section">
+                    <h3>Insights IA</h3>
+                    <div class="insights-grid">
+                        <div class="insight-card high-priority glass-morphism">
+                            <div class="insight-header">
+                                <span class="insight-priority">Haute Priorité</span>
+                                <span class="insight-icon">🚨</span>
+                            </div>
+                            <h4>Opportunité SEO Détectée</h4>
+                            <p>15 nouveaux mots-clés à faible concurrence identifiés dans votre niche</p>
+                        </div>
+                        <div class="insight-card medium-priority glass-morphism">
+                            <div class="insight-header">
+                                <span class="insight-priority">Priorité Moyenne</span>
+                                <span class="insight-icon">⚠️</span>
+                            </div>
+                            <h4>Baisse de Performance</h4>
+                            <p>3 pages importantes ont perdu des positions cette semaine</p>
+                        </div>
+                        <div class="insight-card info-priority glass-morphism">
+                            <div class="insight-header">
+                                <span class="insight-priority">Information</span>
+                                <span class="insight-icon">💡</span>
+                            </div>
+                            <h4>Objectif Atteint</h4>
+                            <p>Votre campagne SEA a dépassé l'objectif de conversions de 23%</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEO Dashboard Section -->
+            <section id="section-seo-dashboard" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Tableau de Bord SEO</h2>
+                    <p>Analyse complète de votre performance SEO</p>
+                </div>
+                
+                <div class="seo-metrics-grid">
+                    <div class="metric-card glass-morphism">
+                        <span class="metric-label">Mots-clés Organiques</span>
+                        <div class="metric-value">1,567</div>
+                    </div>
+                    <div class="metric-card glass-morphism">
+                        <span class="metric-label">Impressions</span>
+                        <div class="metric-value">87,654</div>
+                    </div>
+                    <div class="metric-card glass-morphism">
+                        <span class="metric-label">CTR Moyen</span>
+                        <div class="metric-value">4.8%</div>
+                    </div>
+                    <div class="metric-card glass-morphism">
+                        <span class="metric-label">Position Moyenne</span>
+                        <div class="metric-value">12.3</div>
+                    </div>
+                </div>
+
+                <div class="top-pages-section">
+                    <h3>Top Pages Performantes</h3>
+                    <div class="top-pages-grid" id="top-pages-grid">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Keywords Section -->
+            <section id="section-keywords" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Analyse des Mots-clés</h2>
+                    <p>Recherchez et analysez des opportunités de mots-clés</p>
+                </div>
+                
+                <div class="keyword-input-section glass-morphism">
+                    <div class="form-group">
+                        <label class="form-label">Mots-clés à analyser (un par ligne)</label>
+                        <textarea class="form-control neon-border" id="keyword-input" placeholder="marketing digital&#10;seo france&#10;publicité en ligne" rows="4"></textarea>
+                    </div>
+                    <button class="btn-primary" id="analyze-keywords">Analyser les Mots-clés</button>
+                </div>
+
+                <div class="keyword-results" id="keyword-results">
+                    <!-- Generated by JS -->
+                </div>
+            </section>
+
+            <!-- Technical Audit Section -->
+            <section id="section-audit" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Audit Technique</h2>
+                    <p>Analysez les problèmes techniques de votre site</p>
+                </div>
+                
+                <div class="audit-input-section glass-morphism">
+                    <div class="form-group">
+                        <label class="form-label">URL à auditer</label>
+                        <input type="url" class="form-control neon-border" id="audit-url" placeholder="https://example.com">
+                    </div>
+                    <button class="btn-primary" id="start-audit">Lancer l'Audit</button>
+                </div>
+
+                <div class="audit-results" id="audit-results">
+                    <!-- Generated by JS -->
+                </div>
+            </section>
+
+            <!-- Backlinks Section -->
+            <section id="section-backlinks" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Analyse des Backlinks</h2>
+                    <p>Surveillez et analysez votre profil de liens</p>
+                </div>
+                
+                <div class="backlinks-overview">
+                    <div class="backlink-metrics-grid" id="backlink-metrics">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Campaigns Section -->
+            <section id="section-campaigns" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Campagnes SEA</h2>
+                    <p>Gérez vos campagnes publicitaires</p>
+                </div>
+                
+                <div class="campaigns-grid" id="campaigns-grid">
+                    <!-- Generated by JS -->
+                </div>
+            </section>
+
+            <!-- Ads Section -->
+            <section id="section-ads" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Performance Publicitaire</h2>
+                    <p>Analysez les performances de vos annonces</p>
+                </div>
+                
+                <div class="ad-performance-chart glass-morphism">
+                    <div style="position: relative; height: 400px;">
+                        <canvas id="adPerformanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content Generation Section -->
+            <section id="section-content-gen" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Génération de Contenu IA</h2>
+                    <p>Créez du contenu optimisé avec l'intelligence artificielle</p>
+                </div>
+                
+                <div class="content-gen-form glass-morphism">
+                    <div class="form-group">
+                        <label class="form-label">Type de contenu</label>
+                        <select class="form-control neon-border" id="content-type">
+                            <option value="article">Article de blog</option>
+                            <option value="meta">Méta-description</option>
+                            <option value="title">Titre SEO</option>
+                            <option value="ad">Annonce publicitaire</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Sujet ou mots-clés principaux</label>
+                        <input type="text" class="form-control neon-border" id="content-topic" placeholder="Ex: stratégies SEO 2025">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ton et style</label>
+                        <select class="form-control neon-border" id="content-tone">
+                            <option value="professional">Professionnel</option>
+                            <option value="friendly">Amical</option>
+                            <option value="technical">Technique</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" id="generate-content">Générer le Contenu</button>
+                </div>
+
+                <div class="generated-content glass-morphism" id="generated-content">
+                    <!-- Generated content will appear here -->
+                </div>
+            </section>
+
+            <!-- Content Analysis Section -->
+            <section id="section-content-analysis" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Analyse de Contenu</h2>
+                    <p>Analysez la qualité et l'optimisation de votre contenu</p>
+                </div>
+                
+                <div class="content-analysis-form glass-morphism">
+                    <div class="form-group">
+                        <label class="form-label">Contenu à analyser</label>
+                        <textarea class="form-control neon-border" id="content-to-analyze" rows="8" placeholder="Collez votre contenu ici..."></textarea>
+                    </div>
+                    <button class="btn-primary" id="analyze-content">Analyser le Contenu</button>
+                </div>
+
+                <div class="content-analysis-results glass-morphism" id="content-analysis-results">
+                    <!-- Analysis results will appear here -->
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="section-reports" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Rapports</h2>
+                    <p>Accédez à vos rapports détaillés</p>
+                </div>
+                
+                <div class="reports-grid" id="reports-grid">
+                    <!-- Generated by JS -->
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section id="section-analytics" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Analytics Avancées</h2>
+                    <p>Analyse approfondie de vos données</p>
+                </div>
+                
+                <div class="analytics-overview">
+                    <div class="analytics-charts">
+                        <div class="chart-container glass-morphism">
+                            <h3>Core Web Vitals</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="coreWebVitalsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container glass-morphism">
+                            <h3>Distribution des Mots-clés</h3>
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="keywordDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="section-settings" class="content-section">
+                <div class="section-header">
+                    <h2 class="text-shimmer">Paramètres</h2>
+                    <p>Configurez votre compte et vos intégrations</p>
+                </div>
+                
+                <div class="settings-grid" id="settings-grid">
+                    <!-- Generated by JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Offline Notice -->
+    <div id="offline-notice" class="offline-notice glass-morphism hidden">
+        <div class="offline-content">
+            <span class="offline-icon">📡</span>
+            <span class="offline-text">Mode hors ligne - Synchronisation en attente</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
